@@ -6,7 +6,9 @@ from library import views
 router = routers.DefaultRouter()
 router.register(r'authors', views.AuthorViewSet)
 router.register(r'books', views.BookViewSet)
+router.register(r'members/top-active/', views.MemberTopActiveLoanViewSet)
 router.register(r'members', views.MemberViewSet)
+router.register(r'loans', views.LoanViewSet)
 router.register(r'loans', views.LoanViewSet)
 
 urlpatterns = [

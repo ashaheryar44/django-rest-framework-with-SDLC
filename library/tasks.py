@@ -3,6 +3,9 @@ from .models import Loan
 from django.core.mail import send_mail
 from django.conf import settings
 
+from django.utils import timezone
+
+
 @shared_task
 def send_loan_notification(loan_id):
     try:
@@ -18,3 +21,18 @@ def send_loan_notification(loan_id):
         )
     except Loan.DoesNotExist:
         pass
+
+
+@shared_task
+def send_over_due_loan_notification():
+    try:
+        loans = Loan.objects.filter(return_date=False, due_date__lt=timezone.now())
+        if loans:
+            for loan in loans:
+                send_loan_notification(loan.id)
+
+    except Loan.DoesNotExist:
+        pass
+
+
+
